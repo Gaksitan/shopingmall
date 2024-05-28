@@ -3,12 +3,15 @@ package com.green.shopingmall.controller;
 import java.time.LocalDate;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.green.shopingmall.entity.Member;
+import com.green.shopingmall.entity.Product;
 import com.green.shopingmall.repository.MemberRepository;
+import com.green.shopingmall.repository.ProductRepository;
 
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
@@ -17,7 +20,10 @@ import jakarta.servlet.http.HttpSession;
 public class MyController {
 	
 	@Autowired
-	MemberRepository memberrepository;
+	MemberRepository memRepository;
+	
+	@Autowired
+	ProductRepository pRepository;
 	
 	@RequestMapping({"/", "/index"})
 	public String index() {
@@ -35,7 +41,7 @@ public class MyController {
 		
 		String user_name = request.getParameter("user_name");
 		String user_password = request.getParameter("user_password");
-		Member member = memberrepository.findByUserName(user_name);
+		Member member = memRepository.findByUserName(user_name);
 		HttpSession session = request.getSession();
 		boolean tf;
 		
@@ -88,10 +94,20 @@ public class MyController {
 		LocalDate user_reg_date = LocalDate.now();
 		String user_role = "ROLE_MEMBER"; // ROLE_ADMIN
 		Member member = new Member(user_name, user_password, user_email, user_tel1, user_tel2, user_birth_date, name, zipCode, user_addr1, user_addr2, detail_addr, user_reg_date, user_role, user_gender);
-		memberrepository.save(member);
+		memRepository.save(member);
 		
 		return "redirect:loginForm";
 	}
+	
+	@RequestMapping("/productDetail")
+	public String productDetail(@Param("pno") Long pno, Model model) {
+		
+		Product product = pRepository.findByPno(pno);
+		model.addAttribute("product", product);
+		
+		return "productDetail";
+	}
+	
 	
 	
 	

@@ -5,11 +5,12 @@
 <title>Insert title here</title>
 </head>
 <body>
+<div th:include="header :: header"></div>
 <h1>Index Page</h1>
 <hr>
 <div id="head" th:if="${session.user_name} == null"></div>
 <h2 th:if="${session.user_name} != null"><span th:text="${session.user_name}"></span>님 환영합니다.</h2>
-<a th:if="${session.role} == ROLE_ADMIN" href="regProduct">상품등록</a>
+<a th:if="${session.role} == ROLE_ADMIN" href="/admin/regProductForm">상품등록</a>
 <a th:if="${session.user_name} == null" href="loginForm">로그인</a>
 <a th:if="${session.user_name} == null" href="regForm">회원가입</a>
 <a th:if="${session.user_name} != null" href="logout">로그아웃</a>

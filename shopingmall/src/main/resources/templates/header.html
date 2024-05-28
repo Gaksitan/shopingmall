@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html>
+<html xmlns:th="http://www.thymeleaf.org">
 <head>
 <meta charset="UTF-8">
 <title>Insert title here</title>
@@ -19,8 +19,9 @@
 			</div>
 		</div>
 		<div id="right">
-			<a href="login">로그인</a>
-			<a href="regForm">회원가입</a>
+			<a th:if="${session.user_name} != null" href="logout">로그아웃</a>
+			<a th:if="${session.user_name} == null" href="loginForm">로그인</a>
+			<a th:if="${session.user_name} == null" href="regForm">회원가입</a>
 		</div>
 	</div>
 </header>

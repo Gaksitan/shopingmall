@@ -26,7 +26,7 @@ public class Product {
 	private String pname;
 	private Long price;
 	private String pintro;
-	private String pimgPath;
+	private byte[] pimgPath;
 	private String ptype;
 	private LocalDate pregDate;
 	private Long porder;

@@ -7,15 +7,42 @@
 <body>
 <h1>RegProductForm Page</h1>
 <hr>
-<form action="" method="post">
+<form action="regProduct" method="post" enctype="multipart/form-data">
 	<table>
 		<tr>
 			<th>상품 이름</th>
 			<td><input type="text" name="pname"></td>
 		</tr>
 		<tr>
-			<th></th>
-			<td></td>
+			<th>상품 가격</th>
+			<td><input type="text" name="price"></td>
+		</tr>
+		<tr>
+			<th>상품 소개</th>
+			<td><input type="text" name="pintro"></td>
+		</tr>
+		<tr>
+			<th>상품 이미지</th>
+			<td><input type="file" name="pimgPath"></td>
+		</tr>
+		<tr>
+			<th>상품 타입</th>
+			<td><select name="ptype">
+				<option value="electronicProduct">전자제품</option>
+				<option value="clothes">의류</option>
+				<option value="food">식품</option>
+			</select></td>
+		</tr>
+		<tr>
+			<th>재고량</th>
+			<td><input type="text" name="pstock"></td>
+		</tr>
+		<tr>
+			<th>제조자</th>
+			<td><input type="text" name="manufacturingCompany"></td>
+		</tr>
+		<tr>
+			<td colspan="2"><input type="submit" value="등록"><input type="button" value="취소"></td>
 		</tr>
 	</table>
 </form>
