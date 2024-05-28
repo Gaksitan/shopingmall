@@ -27,12 +27,13 @@ public class Reviews {
 	private Long rno;
 	@ManyToOne
 	@JoinColumn(name = "username")
-	private String username;
+	private Member username;
 	@ManyToOne
 	@JoinColumn(name = "pno")
-	private Long pno;
+	private Product pno;
 	private String review;
 	private boolean actualbuyer;
+	private int amount;
 	private LocalDate rregdate;
 	
 }

@@ -26,10 +26,11 @@ public class OrderInfo {
 	private Long ono;
 	@ManyToOne
 	@JoinColumn(name = "username")
-	private String username;
+	private Member username;
 	@OneToOne
 	@JoinColumn(name = "pno")
-	private Long pno;
+	private Product pno;
+	private int amount;
 	private String oaddr1;
 	private String oaddr2;
 	

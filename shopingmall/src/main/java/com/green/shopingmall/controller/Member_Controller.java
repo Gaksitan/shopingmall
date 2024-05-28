@@ -7,12 +7,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 @RequestMapping("/mem")
 public class Member_Controller {
 	
-	@RequestMapping("/")
-	public String index() {
-		return "index";
+	@RequestMapping("/MyInfo")
+	public String loginForm() {
+		
+		return "thymeleaf/MyInfo";
 	}
-	
-	
 	
 	
 	
