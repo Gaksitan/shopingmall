@@ -2,7 +2,6 @@ package com.green.shopingmall.controller;
 
 import java.io.IOException;
 import java.time.LocalDate;
-import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -13,6 +12,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import com.green.shopingmall.entity.Product;
 import com.green.shopingmall.repository.AdminRepository;
+import com.green.shopingmall.repository.ProductRepository;
 
 import jakarta.servlet.http.HttpServletRequest;
 
@@ -21,7 +21,10 @@ import jakarta.servlet.http.HttpServletRequest;
 public class Admin_Controller {
 	
 	@Autowired
-	AdminRepository admin;
+	AdminRepository aRepository;
+	
+	@Autowired
+	ProductRepository pRepository;
 	
 	@RequestMapping("/regProductForm")
 	public String regProductForm() {
@@ -51,7 +54,7 @@ public class Admin_Controller {
 			}
 			String manufacturingCompany = request.getParameter("manufacturingCompany");
 			Product product = new Product(null, pname, price, pintro, pimgPath, ptype, pregDate, porder, pstock, pstate, manufacturingCompany);
-			admin.save(product);
+			aRepository.save(product);
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
@@ -70,7 +73,14 @@ public class Admin_Controller {
 	}
 	*/
 	
-	
+	@RequestMapping("editProductForm")
+	public String editProductForm(@RequestParam("pno") Long pno, Model model) {
+		
+		Product prod = pRepository.findByPno(pno);
+		model.addAttribute("product", prod);
+		
+		return "admin/editProductForm";
+	}
 	
 	
 }

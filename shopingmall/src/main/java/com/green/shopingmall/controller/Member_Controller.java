@@ -77,16 +77,20 @@ public class Member_Controller {
 		member = mRepository.findByUserName(username);
 		String pno_ = request.getParameter("pno");
 		Long pno = Long.parseLong(pno_);
-		Product pro = new Product();
-		pro = pRepository.findByPno(pno);
+		Product prod = new Product();
+		prod = pRepository.findByPno(pno);
 		String oaddr1 = request.getParameter("oaddr1");
 		String oaddr2 = request.getParameter("oaddr2");
 		String amount_ = request.getParameter("amount");
 		int amount = Integer.parseInt(amount_);
 		LocalDate orderDate = LocalDate.now();
-		OrderInfo order = new OrderInfo(null, member, pro, amount, oaddr1, oaddr2, orderDate);
+		OrderInfo order = new OrderInfo(null, member, prod, amount, oaddr1, oaddr2, orderDate);
 		oRepository.save(order);
-		
+		Product product = pRepository.findByPno(pno);
+		Long newStock = product.getPstock() - Long.parseLong(amount_);
+		System.out.println(newStock);
+		product.setPstock(newStock);
+		pRepository.save(product);
 		return "redirect:/productList";
 	}
 	

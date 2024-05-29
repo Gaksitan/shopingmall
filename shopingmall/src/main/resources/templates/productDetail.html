@@ -9,6 +9,7 @@
 <h1>ProductDetail Page</h1>
 <hr>
 <form action="/member/regOrderForm" method="post">
+	<input th:if="${session.role} == ROLE_ADMIN" type="button" value="상품 수정하기" onclick="EditProduct()">
 	<table border="1" th:each="product : ${product}">
 		<tr>
 			<th>상품이름</th>
@@ -38,7 +39,7 @@
 		</tr>
 		<tr>
 			<th>상품재고량(개)</th>
-			<td th:text="${product.pstock - amount}"></td>
+			<td th:text="${product.pstock}"></td>
 			<td><input type="hidden" th:value="${product.pstock}" name="pstock"></td>
 		</tr>
 		<tr>
@@ -56,4 +57,9 @@
 	<input th:if="${session.user_name} != null" type="submit" value="주문하기">
 </form>
 </body>
+<script>
+	function EditProduct(){
+		location.href = "editProductForm?pno=[[${product.pno}]]";
+	}
+</script>
 </html>
