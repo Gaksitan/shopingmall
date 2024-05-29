@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+</head>
+<body>
+<div th:include="/header :: header"></div>
+<h1>RegOrderForm</h1>
+<hr>
+<form action="/member/Order" method="post">
+	<table>
+		<tr>
+			<th>구매자</th>
+			<td th:text="${session.user_name}"></td>
+			<td><input type="hidden" th:value="${session.user_name}" name="username"></td>
+		</tr>
+		<tr>
+			<th>상품정보</th>
+			<td th:text="${product.pname}"></td>
+			<td><input type="hidden" th:value="${product.pno}" name="pno"></td>
+		</tr>
+		<tr>
+			<th>주소</th>
+			<td th:text="${session.member.userAddr1}"></td>
+			<td><input type="hidden" th:value="${session.member.userAddr1}" name="oaddr1"></td>
+		</tr>
+		<tr>
+			<th>상세주소</th>
+			<td th:text="${session.member.detailAddr}"></td>
+			<td><input type="hidden" th:value="${session.member.detailAddr}" name="oaddr2"></td>
+		</tr>
+	</table>
+	<input type="number" th:value="${amount}" name="amount"><br>
+	<input type="submit" value="주문하기"><input type="button" value="취소" onclick="cancer()">
+</form>
+</body>
+<script>
+	function cancer(){
+		location.href = "/productList";
+	}
+</script>
+</html>

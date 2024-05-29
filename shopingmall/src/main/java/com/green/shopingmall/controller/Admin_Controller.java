@@ -29,13 +29,16 @@ public class Admin_Controller {
 	}
 	
 	@RequestMapping("/regProduct")
-	public String regProduct(HttpServletRequest request, @RequestParam("pimgPath") MultipartFile file) {
+	public String regProduct(HttpServletRequest request, @RequestParam(value = "pimg_path", required = false) MultipartFile file) {
 		try {
 			String pname = request.getParameter("pname");
 			String price_ = request.getParameter("price");
 			Long price = Long.parseLong(price_);
 			String pintro = request.getParameter("pintro");
-			byte[] pimgPath = file.getBytes();
+			byte[] pimgPath = null;
+            if (file != null && !file.isEmpty()) {
+                pimgPath = file.getBytes();
+            }
 			String ptype = request.getParameter("ptype");
 			LocalDate pregDate = LocalDate.now();
 			Long porder = 0L;
@@ -56,14 +59,18 @@ public class Admin_Controller {
 		return "redirect:/admin/productList";
 	}
 	
+	/*
 	@RequestMapping("/productList")
 	public String productList(Model model) {
 		
 		List<Product> list = admin.findAll();
-		model.addAttribute("list", list);
+		model.addAttribute("productList", list);
 		
-		return "productList";
+		return "/admin/productList";
 	}
+	*/
+	
+	
 	
 	
 }

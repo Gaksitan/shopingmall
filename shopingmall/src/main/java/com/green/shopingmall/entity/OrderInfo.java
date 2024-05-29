@@ -1,5 +1,7 @@
 package com.green.shopingmall.entity;
 
+import java.time.LocalDate;
+
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -29,9 +31,10 @@ public class OrderInfo {
 	private Member username;
 	@OneToOne
 	@JoinColumn(name = "pno")
-	private Product pno;
+	private Product pno; // 중복 허용 
 	private int amount;
 	private String oaddr1;
 	private String oaddr2;
+	private LocalDate orderDate;
 	
 }

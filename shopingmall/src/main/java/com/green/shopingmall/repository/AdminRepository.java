@@ -10,6 +10,6 @@ import com.green.shopingmall.entity.Product;
 @Repository
 public interface AdminRepository extends JpaRepository<Product, Long>{
 	
-	public List<Product> findAll();
+	
 	
 }

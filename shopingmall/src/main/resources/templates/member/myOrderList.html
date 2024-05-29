@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+</head>
+<body>
+<div th:include="header :: header"></div>
+<h1>MyOrderList Page</h1>
+<hr>
+<table border="1">
+	<thead>
+		<tr>
+			<th><input type="checkbox" name="total" id="total"></th>
+			<th>상품이름</th><th>상품가격</th><th>상품타입</th>
+			<th>주문날짜</th><th>제조사</th><th>수량</th>
+		</tr>
+	</thead>
+	<tbody>
+		<tr th:Each="orderlist : list2">
+			<td><input type="checkbox" name=""></td>
+			<td th:text="${orderlist.pname}"></td>
+			<td th:text="${orderlist.price}"></td>
+			<td th:text="${orderlist.ptype}"></td>
+			<td th:text="${orderlist.porderDate}"></td>
+			<td th:text="${orderlist.manufacturingCompany}"></td>
+			<td th:text="${orderlist.amount}"></td>
+		</tr>
+	</tbody>
+</table>
+</body>
+</html>

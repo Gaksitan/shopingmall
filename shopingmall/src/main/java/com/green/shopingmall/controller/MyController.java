@@ -1,16 +1,19 @@
 package com.green.shopingmall.controller;
 
 import java.time.LocalDate;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import com.green.shopingmall.entity.Member;
+import com.green.shopingmall.entity.OrderInfo;
 import com.green.shopingmall.entity.Product;
 import com.green.shopingmall.repository.MemberRepository;
+import com.green.shopingmall.repository.OrderInfoRepository;
 import com.green.shopingmall.repository.ProductRepository;
 
 import jakarta.servlet.http.HttpServletRequest;
@@ -25,15 +28,18 @@ public class MyController {
 	@Autowired
 	ProductRepository pRepository;
 	
+	@Autowired
+	OrderInfoRepository oRepository;
+	
 	@RequestMapping({"/", "/index"})
 	public String index() {
-		return "index";
+		return "/index";
 	}
 	
 	@RequestMapping("/loginForm")
 	public String loginForm() {
 		
-		return "loginForm";
+		return "/loginForm";
 	}
 	
 	@RequestMapping("/login")
@@ -45,7 +51,7 @@ public class MyController {
 		HttpSession session = request.getSession();
 		boolean tf;
 		
-		if(member.getUserName().equals(user_name) && member.getUserPassword().equals(user_password)) {
+		if(member != null && member.getUserName().equals(user_name) && member.getUserPassword().equals(user_password)) {
 			session.setAttribute("user_name", member.getUserName());
 			session.setAttribute("role", member.getUserRole());
 			session.setAttribute("member", member);
@@ -53,12 +59,12 @@ public class MyController {
 		}else {
 			tf = false;
 			model.addAttribute("tf", tf);
-			return "loginForm";
+			return "/loginForm";
 		}
 		
 		model.addAttribute("tf", tf);
 		
-		return "index";
+		return "/index";
 	}
 	
 	@RequestMapping("/logout")
@@ -66,14 +72,14 @@ public class MyController {
 		
 		session.invalidate();
 		
-		return "index";
+		return "/index";
 	}
 	
 	
 	@RequestMapping("/regForm")
 	public String regForm() {
 		
-		return "regForm";
+		return "/regForm";
 	}
 	
 	@RequestMapping("/regist")
@@ -96,19 +102,32 @@ public class MyController {
 		Member member = new Member(user_name, user_password, user_email, user_tel1, user_tel2, user_birth_date, name, zipCode, user_addr1, user_addr2, detail_addr, user_reg_date, user_role, user_gender);
 		memRepository.save(member);
 		
-		return "redirect:loginForm";
+		return "redirect:/loginForm";
 	}
 	
 	@RequestMapping("/productDetail")
-	public String productDetail(@Param("pno") Long pno, Model model) {
+	public String productDetail(@RequestParam("pno") Long pno, Model model) {
 		
 		Product product = pRepository.findByPno(pno);
+		List<OrderInfo> order = oRepository.findByPno(product);
+		int amount = 0;
+		for(int i = 0; i < order.size(); i++) {
+			amount = amount + order.get(i).getAmount();
+		}
 		model.addAttribute("product", product);
+		model.addAttribute("amount", amount);
 		
-		return "productDetail";
+		return "/productDetail";
 	}
 	
-	
+	@RequestMapping("/productList")
+	public String productList(Model model) {
+		
+		List<Product> list = pRepository.findAll();
+		model.addAttribute("productList", list);
+		
+		return "/productList";
+	}
 	
 	
 	
