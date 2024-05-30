@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+</head>
+<body>
+<h1>RegistForm Page</h1>
+<hr>
+<div>
+	<form action="/registProc" method="post">
+		<input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"><!-- csrf 설정을 끄거나 이 코드를 추가 -->
+		<input type="text" name="username" placeholder="Input id..."><br>
+		<input type="password" name="password" placeholder="Input pw..."><br>
+		<input type="text" name="name" placeholder="Input name..."><br>
+		<input type="submit" value="회원 등록">
+	</form>
+</div>
+</body>
+</html>

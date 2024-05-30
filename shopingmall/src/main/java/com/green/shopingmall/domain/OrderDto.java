@@ -11,7 +11,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class OrderList {
+public class OrderDto {
 	private Long pno;
 	private String pname;
 	private Long price;

@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+</head>
+<body>
+<h1>Admin Welcome</h1>
+<hr>
+<h2>@AuthenticationPrincipal을 사용하여 UserDetails 를 구현한 구현체(CustomUserDetails 객체)를 직접 파라미터 주입받아 사용</h2>
+<p>[[${username}]]</p>
+<p>[[${name}]]</p>
+<p>[[${role}]]</p>
+</body>
+</html>

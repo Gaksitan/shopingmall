@@ -1,15 +1,15 @@
 package com.green.shopingmall.controller;
 
 import java.time.LocalDate;
-import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
-import com.green.shopingmall.domain.OrderList;
+import com.green.shopingmall.entity.Basket;
 import com.green.shopingmall.entity.Member;
 import com.green.shopingmall.entity.OrderInfo;
 import com.green.shopingmall.entity.Product;
@@ -99,7 +99,7 @@ public class Member_Controller {
 		return "redirect:/productList";
 	}
 	
-	
+	/*
 	@RequestMapping("/myOrderList")
 	public String myOrderList(HttpSession session, Model model) {
 		
@@ -111,15 +111,16 @@ public class Member_Controller {
 		Member mem = new Member();
 		mem = mRepository.findByUserName(user_name);
 		List<OrderInfo> list = oRepository.findByUsername(mem);
-		List<OrderList> list2 = new ArrayList<>();
+		List<OrderDto> list2 = new ArrayList<>();
 		for(int i = 0; i < list.size(); i++) {
 			Long pno = list.get(i).getPno().getPno();
+			System.out.println("pno : " + pno);
 			Product prod = pRepository.findByPno(pno);
 			System.out.println("===============");
 			System.out.println(prod.getPname());
 			System.out.println("===============");
-			OrderList orderlist = new OrderList(prod.getPno(), prod.getPname(), prod.getPrice(), prod.getPtype(), list.get(i).getOrderDate(), prod.getManufacturingCompany(), list.get(i).getAmount());
-			list2.add(orderlist);
+			OrderDto orderDto = new OrderDto(prod.getPno(), prod.getPname(), prod.getPrice(), prod.getPtype(), list.get(i).getOrderDate(), prod.getManufacturingCompany(), list.get(i).getAmount());
+			list2.add(orderDto);
 		}
 		System.out.println("===============");
 		System.out.println(list2);
@@ -129,9 +130,51 @@ public class Member_Controller {
 		
 		return "member/myOrderList";
 	}
+	*/
 	
+	@RequestMapping("/myOrderList")
+	public String myOrderList(HttpSession session, Model model) {
+		String user_name = (String) session.getAttribute("user_name");
+		Member member = mRepository.findByUserName(user_name);
+		
+		List<OrderInfo> list = oRepository.findByUsername(member);
+		System.out.println("-------------------------------------");
+		System.out.println(list);
+		model.addAttribute("list", list);
+		
+		
+		return "member/myOrderList";
+	}
 	
+	@RequestMapping("/basket")
+	public String basket(@RequestParam("pno") Long pno, HttpServletRequest request) {
+		Product prod = pRepository.findByPno(pno);
+		HttpSession session = request.getSession();
+		String user_name = (String) session.getAttribute("user_name");
+		Member member = mRepository.findByUserName(user_name);
+		Long amount = Long.parseLong(request.getParameter("amount"));
+		Basket basket = new Basket(null, member, prod, amount, LocalDate.now());
+		bRepository.save(basket);
+		
+		return "productDetail";
+	}
 	
+	@RequestMapping("/myBasketList")
+	public String myBasketList(HttpSession session, Model model) {
+		String user_name = (String) session.getAttribute("user_name");
+		Member member = mRepository.findByUserName(user_name);
+		List<Basket> basketList = bRepository.findByUsername(member);
+		model.addAttribute("basketList", basketList);
+		
+		return "/member/myBasketList";
+	}
 	
+	@RequestMapping("/basketOrder")
+	public String basketOrder(HttpServletRequest request) {
+		
+		
+		
+		return "member/myOrderList";
+	}
 	
 }

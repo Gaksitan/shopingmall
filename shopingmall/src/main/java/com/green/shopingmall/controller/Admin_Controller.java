@@ -94,5 +94,33 @@ public class Admin_Controller {
 		return "admin/editProductForm";
 	}
 	
+	@RequestMapping("/editProduct")
+	public String editProduct(HttpServletRequest request) {
+		String pno_ = request.getParameter("pno");
+		Long pno = Long.parseLong(pno_);
+		Product prod = pRepository.findByPno(pno);
+		String pname = request.getParameter("pname");
+		Long price = Long.parseLong(request.getParameter("price"));
+		String pintro = request.getParameter("pintro");
+		String ptype = request.getParameter("ptype");
+		Long pstock = Long.parseLong(request.getParameter("pstock"));
+		boolean pstate = Boolean.parseBoolean(request.getParameter("pstate"));
+		String manufacturingCompany = request.getParameter("manufacturingCompany");
+		
+		prod.setPname(pname);
+		prod.setPrice(price);
+		prod.setPintro(pintro);
+		prod.setPtype(ptype);
+		prod.setPstock(pstock);
+		prod.setPstate(pstate);
+		prod.setManufacturingCompany(manufacturingCompany);
+		
+		pRepository.save(prod);
+		
+		return "redirect:/productDetail?pno=" + pno;
+	}
+	
+	
+	
 	
 }

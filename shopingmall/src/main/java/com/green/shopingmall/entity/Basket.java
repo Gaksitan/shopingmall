@@ -32,6 +32,7 @@ public class Basket {
 	@OneToOne
 	@JoinColumn(name = "pno")
 	private Product pno;
+	private Long amount;
 	private LocalDate bregdate;
 	
 	

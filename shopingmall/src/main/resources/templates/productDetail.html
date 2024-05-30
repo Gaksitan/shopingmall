@@ -8,9 +8,9 @@
 <div th:include="header :: header"></div>
 <h1>ProductDetail Page</h1>
 <hr>
-<form action="/member/regOrderForm" method="post">
+<form action="/member/regOrderForm" method="post" th:each="product : ${product}">
 	<input th:if="${session.role} == ROLE_ADMIN" type="button" value="상품 수정하기" onclick="EditProduct()">
-	<table border="1" th:each="product : ${product}">
+	<table border="1">
 		<tr>
 			<th>상품이름</th>
 			<td th:text="${product.pname}"></td>
@@ -19,7 +19,7 @@
 		</tr>
 		<tr>
 			<th>상품가격</th>
-			<td th:text="${product.price}"></td>
+			<td th:text="${product.price} + ' 원'"></td>
 			<td><input type="hidden" th:value="${product.price}" name="price"></td>
 		</tr>
 		<tr>
@@ -29,7 +29,8 @@
 		</tr>
 		<tr>
 			<th>상품(판매)상태</th>
-			<td th:text="${product.pstate}"></td>
+			<td th:if="${product.pstate} == true">판매중</td>
+			<td th:if="${product.pstate} == false">품절</td>
 			<td><input type="hidden" th:value="${product.pstate}" name="pstate"></td>
 		</tr>
 		<tr>
@@ -53,13 +54,24 @@
 			<td><input type="hidden" th:value="${product.ptype}" name="ptype"></td>
 		</tr>
 	</table>
-	<input type="number" name="amount">
+	<input type="number" name="amount" id="amount">
+	<input th:if="${session.user_name} != null" type="button" value="장바구니" onclick="basket()">
 	<input th:if="${session.user_name} != null" type="submit" value="주문하기">
 </form>
 </body>
 <script>
 	function EditProduct(){
-		location.href = "editProductForm?pno=[[${product.pno}]]";
+		location.href = "admin/editProductForm?pno=[[${product.pno}]]";
+	}
+	
+	function basket(){
+		const amountValue = document.querySelector("#amount").value;
+		const xhttp = new XMLHttpRequest();
+		xhttp.onload = function(){
+			
+		}
+		xhttp.open("GET", "/basket?pno=[[${product.pno}]]&amount=" + amountValue);
+		xhttp.send();
 	}
 </script>
 </html>

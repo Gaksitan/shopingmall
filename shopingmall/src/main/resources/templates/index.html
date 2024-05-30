@@ -11,6 +11,7 @@
 <div id="head" th:if="${session.user_name} == null"></div>
 <h2 th:if="${session.user_name} != null"><span th:text="(${session.user_name})"></span>님 환영합니다.</h2>
 <a href="productList">상품목록</a>
+<a thif="${session.user_name} != null" href="/member/myBasketList">내 장바구니 목록</a>
 <a th:if="${session.user_name} != null" href="/member/myOrderList">내 주문목록</a>
 <a th:if="${session.role} == ROLE_ADMIN" href="/admin/regProductForm">상품등록</a>
 </body>

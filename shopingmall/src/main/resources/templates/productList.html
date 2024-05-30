@@ -28,7 +28,8 @@
 			 --> 
 			<td><a th:text="${product.pname}" th:href="@{/productDetail(pno=${product.pno})}"></a></td>
 			<td th:text="${product.price}"></td>
-			<td th:text="${product.pstate}"></td>
+			<td th:if="${product.pstate} == true">판매중</td>
+			<td th:if="${product.pstate} == false">품절</td>
 			<td th:text="${product.pregDate}"></td>
 			<td th:text="${product.manufacturingCompany}"></td>
 			<td th:text="${product.ptype}"></td>

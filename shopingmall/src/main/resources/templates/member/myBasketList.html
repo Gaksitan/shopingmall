@@ -5,6 +5,25 @@
 <title>Insert title here</title>
 </head>
 <body>
-
+<h1>MyBasketList Page</h1>
+<hr>
+<form action="member/regOrderForm" method="post">
+	<table border="1">
+		<tr>
+			<th>상품이미지</th><th>상품 이름</th><th>상품 가격</th>
+			<th>재고</th><th>구매 수량</th><th>총 가격</th>
+		</tr>
+		<tr th:Each="basket : ${basketList}">
+			<td><img src="" alt="상품이미지"></td>
+			<td th:text="${basket.pno.pname}" name="pname"></td>
+			<td th:text="${basket.pno.price}" name="price"></td>
+			<td th:text="${basket.pno.pstock}" name="pstock"></td>
+			<td><input type="number" name="amount" th:value="${basket.amount}"></td>
+			<td th:text="${basket.pno.price} * ${basket.amount}"></td>
+			<td><input type="submit" value="구매하기"></td>
+			<input type="hidden" name="pno" th:value="${basket.pno}">
+		</tr>
+	</table>
+</form>
 </body>
 </html>
