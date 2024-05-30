@@ -12,5 +12,6 @@ public interface ProductRepository extends JpaRepository<Product, Long>{
 	
 	public Product findByPno(Long pno);
 	public List<Product> findAll();
+	public List<Product> findByPnameLike(String pname);
 	
 }

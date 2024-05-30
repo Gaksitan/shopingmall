@@ -29,7 +29,7 @@ public class OrderInfo {
 	@ManyToOne
 	@JoinColumn(name = "username")
 	private Member username;
-	@OneToOne
+	@ManyToOne
 	@JoinColumn(name = "pno")
 	private Product pno; // 중복 허용 
 	private int amount;

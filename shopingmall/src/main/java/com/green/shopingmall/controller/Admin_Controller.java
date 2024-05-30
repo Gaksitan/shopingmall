@@ -15,6 +15,7 @@ import com.green.shopingmall.repository.AdminRepository;
 import com.green.shopingmall.repository.ProductRepository;
 
 import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpSession;
 
 @Controller
 @RequestMapping("/admin")
@@ -27,12 +28,23 @@ public class Admin_Controller {
 	ProductRepository pRepository;
 	
 	@RequestMapping("/regProductForm")
-	public String regProductForm() {
+	public String regProductForm(HttpSession session) {
+		String role = (String) session.getAttribute("role");
+		if(!role.equals("ROLE_ADMIN")) {
+			return "/error403";
+		}
+		
 		return "/admin/regProductForm";
 	}
 	
 	@RequestMapping("/regProduct")
 	public String regProduct(HttpServletRequest request, @RequestParam(value = "pimg_path", required = false) MultipartFile file) {
+		HttpSession session = request.getSession();
+		String role = (String) session.getAttribute("role");
+		if(!role.equals("ROLE_ADMIN")) {
+			return "/error403";
+		}
+		
 		try {
 			String pname = request.getParameter("pname");
 			String price_ = request.getParameter("price");

@@ -58,6 +58,11 @@ public class Member_Controller {
 	@RequestMapping("/regOrderForm")
 	public String regOrder(HttpServletRequest request, Model model) {
 		
+		HttpSession session = request.getSession();
+		if(session.getAttribute("user_name") == null) {
+			return "/error403";
+		}
+		
 		String pno_ = request.getParameter("pno");
 		Long pno = Long.parseLong(pno_);
 		Product pro = pRepository.findByPno(pno);
@@ -98,6 +103,10 @@ public class Member_Controller {
 	@RequestMapping("/myOrderList")
 	public String myOrderList(HttpSession session, Model model) {
 		
+		if(session.getAttribute("user_name") == null) {
+			return "/error403";
+		}
+		
 		String user_name = (String) session.getAttribute("user_name");
 		Member mem = new Member();
 		mem = mRepository.findByUserName(user_name);
@@ -120,7 +129,6 @@ public class Member_Controller {
 		
 		return "member/myOrderList";
 	}
-	
 	
 	
 	

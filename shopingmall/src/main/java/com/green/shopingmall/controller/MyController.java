@@ -129,6 +129,16 @@ public class MyController {
 		return "/productList";
 	}
 	
+	@RequestMapping("/searchResult")
+	public String searchResult(@RequestParam("search") String search, Model model) {
+		
+		List<Product> prodList = pRepository.findByPnameLike(search);
+		System.out.println(prodList);
+		model.addAttribute("list", prodList);
+		
+		return "/searchResult";
+	}
+	
 	
 	
 }
