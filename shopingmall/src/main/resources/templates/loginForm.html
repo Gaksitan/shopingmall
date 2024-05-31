@@ -20,6 +20,9 @@
 			<td><input type="password" name="user_password"></td>
 			<td><a href="regForm">회원가입</a></td>
 		</tr>
+		<tr>
+			<td th:if="${tf} == false">로그인에 실패하셨습니다.</td>
+		</tr>
 	</form>
 </table>
 </body>

@@ -10,7 +10,12 @@
 <hr>
 <form action="/member/regOrderForm" method="post" th:each="product : ${product}">
 	<input th:if="${session.role} == ROLE_ADMIN" type="button" value="상품 수정하기" onclick="EditProduct()">
+	<input th:if="${session.role} == ROLE_ADMIN" type="button" value="상품 삭제하기" onclick="DeleteProduct()">
 	<table border="1">
+		<tr>
+			<th>상품이미지</th>
+			<td><img th:src="${product.pimgPath}" alt="상품이미지"></td>
+		</tr>
 		<tr>
 			<th>상품이름</th>
 			<td th:text="${product.pname}"></td>
@@ -54,9 +59,9 @@
 			<td><input type="hidden" th:value="${product.ptype}" name="ptype"></td>
 		</tr>
 	</table>
-	<input type="number" name="amount" id="amount">
-	<input th:if="${session.user_name} != null" type="button" value="장바구니" onclick="basket()">
-	<input th:if="${session.user_name} != null" type="submit" value="주문하기">
+	<input type="number" name="amount" value="0" id="amount" th:disabled="${product.pstock < 1} ? 'disabled'">
+	<input th:if="${session.user_name != null}" type="button" value="장바구니" onclick="basket()" th:disabled="${product.pstock < 1} ? 'disabled'">
+	<input th:if="${session.user_name != null}" type="submit" value="주문하기" onclick="return orderAmount()" th:disabled="${product.pstock < 1} ? 'disabled'">
 </form>
 </body>
 <script>
@@ -64,14 +69,38 @@
 		location.href = "admin/editProductForm?pno=[[${product.pno}]]";
 	}
 	
+	function DeleteProduct(){
+		location.href = "admin/deleteProduce?pno=[[${product.pno}]]";
+	}
+	
+	function orderAmount(){
+		const pstock = document.querySelector("input[name='pstock']");
+		let amount = document.querySelector("input[name='amount']");
+		if(pstock.value < amount.value){
+			alert("재고가 부족합니다.")
+			return false;
+		}else{
+			alert("주문작성 페이지로 이동합니다.")
+			return true;
+		}
+	}
+	
 	function basket(){
 		const amountValue = document.querySelector("#amount").value;
 		const xhttp = new XMLHttpRequest();
 		xhttp.onload = function(){
-			
+			alert(this.responseText);
 		}
-		xhttp.open("GET", "/basket?pno=[[${product.pno}]]&amount=" + amountValue);
-		xhttp.send();
+		xhttp.open("POST", "/member/basket", true);
+		xhttp.setRequestHeader("Content-type", "application/json");
+		const data = JSON.stringify({
+			pno : "[[${product.pno}]]",
+			amount : amountValue
+		})
+		xhttp.send(data);
+		xhttp.onerror = function(){
+			alert("에러 : 장바구니 담기 실패")
+		}
 	}
 </script>
 </html>

@@ -1,36 +1,27 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html>
 <head>
 <meta charset="UTF-8">
 <title>Insert title here</title>
 </head>
-<style>
-	table {
-		text-align: center;
-	}
-</style>
 <body>
-<div th:include="header :: header"></div>
-<h1>ProductList Page</h1>
+<div th:include="header::header"></div>
+<h1>RegistedProductManagement Page</h1>
 <hr>
 <table border="1">
 	<thead>
 		<tr>
-			<!-- <th>상품이미지</th> -->
 			<th>상품이름</th><th>상품가격(원)</th><th>재고량</th><th>상품(판매)상태</th>
 			<th>등록날짜</th><th>제조사</th><th>상품타입</th>
 		</tr>
 	</thead>
 	<tbody>
 		<tr th:each="product : ${productList}">
-			<!-- 
-			<td><img th:src="@{/images/{filename}(filename=${ptofuvt.pimgPath})}" alt="상품이미지"></td>
-			 --> 
 			<td><a th:text="${product.pname}" th:href="@{/productDetail(pno=${product.pno})}"></a></td>
 			<td th:text="${product.price}"></td>
 			<td th:text="${product.pstock} + ' 개'"></td>
-			<td th:if="${product.pstate} == true">판매중</td>
-			<td th:if="${product.pstate} == false">품절</td>
+			<td th:if="${product.pstate == true}">판매중</td>
+			<td th:if="${product.pstate == false}">품절</td>
 			<td th:text="${product.pregDate}"></td>
 			<td th:text="${product.manufacturingCompany}"></td>
 			<td th:text="${product.ptype}"></td>

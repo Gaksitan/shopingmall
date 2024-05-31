@@ -82,6 +82,12 @@ public class MyController {
 		return "/regForm";
 	}
 	
+	@RequestMapping("/alert")
+	public String alert() {
+		
+		return "/alert";
+	}
+	
 	@RequestMapping("/regist")
 	public String regist(HttpServletRequest request, Model model) {
 		String user_name = request.getParameter("user_name");

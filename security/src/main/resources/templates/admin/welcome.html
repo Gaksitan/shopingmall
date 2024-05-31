@@ -11,5 +11,9 @@
 <p>[[${username}]]</p>
 <p>[[${name}]]</p>
 <p>[[${role}]]</p>
+<h2>Thymeleaf에서 직접 접근</h2>
+<p>Welcome, <span sec:authentication="name"></span>!</p>
+<p>Welcome, <span sec:authentication="principal.name"></span>!</p>
+<p>Welcome, <span sec:authentication="principal.role"></span>!</p>
 </body>
 </html>

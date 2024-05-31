@@ -24,6 +24,14 @@
 			<a th:if="${session.user_name} == null" href="/regForm">회원가입</a>
 		</div>
 	</div>
+	<div id="middle">
+		<div>
+			<a href="/productList">상품목록</a>
+			<a th:if="${session.user_name} != null" href="/member/myBasketList">내 장바구니 목록</a>
+			<a th:if="${session.user_name} != null" href="/member/myOrderList">내 주문목록</a>
+			<a th:if="${session.role} == ROLE_ADMIN" href="/admin/regProductForm">상품등록</a>
+		</div>
+	</div>
 </header>
 </body>
 </html>

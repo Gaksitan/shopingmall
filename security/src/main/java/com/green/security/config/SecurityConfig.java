@@ -26,7 +26,10 @@ public class SecurityConfig {
 				.anyRequest().authenticated() // 위에서 설정한 애들빼고 나머지는 인증을 거쳐야한다.(anyRequest)
 				
 				);
-		
+		/* 
+		 * JSP에서 시큐리티 사용시 위의 코드를 이걸로 대체
+		 * anyRequest().authenticated() -> anyRequest().permitAll()
+		 */
 		http.formLogin((auth) -> auth
 				.loginPage("/login") // 로그인 폼 지정 - 쓰지 않으면 Spring Security가 제공하는 로그인 폼 사용
 				.loginProcessingUrl("/loginProc") // 로그인 폼 지정 후 폼 파라미터 보내는 경로지정 - 컨트롤러에 직접 만들지 않는다.(Spring Security가 알아서 처리함)

@@ -26,12 +26,12 @@ public class Product {
 	private String pname;
 	private Long price;
 	private String pintro;
-	private byte[] pimgPath;
+	private String pimgPath;
 	private String ptype;
 	private LocalDate pregDate;
 	private Long porder;
 	private Long pstock;
 	private boolean pstate;
 	private String manufacturingCompany;
-	
+	private String registrant;
 }

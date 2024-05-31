@@ -6,9 +6,12 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.green.shopingmall.domain.BasketJson;
 import com.green.shopingmall.entity.Basket;
 import com.green.shopingmall.entity.Member;
 import com.green.shopingmall.entity.OrderInfo;
@@ -59,6 +62,7 @@ public class Member_Controller {
 	public String regOrder(HttpServletRequest request, Model model) {
 		
 		HttpSession session = request.getSession();
+		
 		if(session.getAttribute("user_name") == null) {
 			return "/error403";
 		}
@@ -68,8 +72,13 @@ public class Member_Controller {
 		Product pro = pRepository.findByPno(pno);
 		String amount_ = request.getParameter("amount");
 		int amount = Integer.parseInt(amount_);
+		
 		model.addAttribute("product", pro);
 		model.addAttribute("amount", amount);
+		
+		if(pro.getPstock() < amount) {
+			return "productDetail?pno=" + pno;
+		}
 		
 		return "member/regOrderForm";
 	}
@@ -91,6 +100,11 @@ public class Member_Controller {
 		LocalDate orderDate = LocalDate.now();
 		OrderInfo order = new OrderInfo(null, member, prod, amount, oaddr1, oaddr2, orderDate);
 		oRepository.save(order);
+		Basket basket = bRepository.findByUsernameAndPno(username, pno);
+		if(basket != null) {
+			bRepository.delete(basket);
+			System.out.println(basket);
+		}
 		Product product = pRepository.findByPno(pno);
 		Long newStock = product.getPstock() - Long.parseLong(amount_);
 		System.out.println(newStock);
@@ -147,16 +161,28 @@ public class Member_Controller {
 	}
 	
 	@RequestMapping("/basket")
-	public String basket(@RequestParam("pno") Long pno, HttpServletRequest request) {
-		Product prod = pRepository.findByPno(pno);
+	public @ResponseBody String basket(@RequestBody BasketJson bjson , HttpServletRequest request) {
+		
 		HttpSession session = request.getSession();
 		String user_name = (String) session.getAttribute("user_name");
 		Member member = mRepository.findByUserName(user_name);
-		Long amount = Long.parseLong(request.getParameter("amount"));
-		Basket basket = new Basket(null, member, prod, amount, LocalDate.now());
-		bRepository.save(basket);
+		Product prod = pRepository.findByPno(bjson.getPno());
+		Basket basket = bRepository.findByUsernameAndPno(user_name, bjson.getPno());
+		if(basket != null) {
+			Long num = basket.getAmount();
+			basket.setAmount(bjson.getAmount() + num);
+			basket.setBregdate(LocalDate.now());
+			bRepository.save(basket);
+		}else {
+			Basket basket2 = new Basket();
+			basket2.setUsername(member);
+			basket2.setPno(prod);
+			basket2.setAmount(bjson.getAmount());
+			basket2.setBregdate(LocalDate.now());
+			bRepository.save(basket2);
+		}
 		
-		return "productDetail";
+		return "장바구니에 추가되었습니다.";
 	}
 	
 	@RequestMapping("/myBasketList")
@@ -176,5 +202,24 @@ public class Member_Controller {
 		
 		return "member/myOrderList";
 	}
+	
+	@RequestMapping("/deleteBasket")
+	public @ResponseBody String delete(@RequestBody Long pno, HttpSession session) {
+		/*
+		String user_name = (String) session.getAttribute("user_name");
+		Product prod = pRepository.findByPno(pno);
+		Basket basket = bRepository.findByUsernameAndPno(user_name, pno);
+		bRepository.delete(basket);
+		*/
+		Product prod = pRepository.findByPno(pno);
+		String user_name = (String) session.getAttribute("user_name");
+		Basket basket = bRepository.findByUsernameAndPno(user_name, pno);
+		bRepository.delete(basket);
+		
+		return prod.getPname() + "이 장바구니에서 삭제 되었습니다.";
+	}
+	
+	
+	
 	
 }

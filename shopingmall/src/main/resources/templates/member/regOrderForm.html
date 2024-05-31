@@ -31,13 +31,14 @@
 			<td><input type="hidden" th:value="${session.member.detailAddr}" name="oaddr2"></td>
 		</tr>
 	</table>
-	<input type="number" th:value="${amount}" name="amount"><br>
-	<input type="submit" value="주문하기"><input type="button" value="취소" onclick="cancer()">
+	<input type="number" th:value="${amount}" name="amount" th:disabled="${product.pstock < 1} ? 'disabled'"><br>
+	<input type="submit" value="주문하기" th:disabled="${product.pstock < 1} ? 'disabled'" onclick="return orderAmount()">
+	<input type="button" value="취소" onclick="cancer()">
 </form>
 </body>
 <script>
 	function cancer(){
-		location.href = "/productList";
+		location.href = "/productDetail?pno=[[${product.pno}]]";
 	}
 	
 </script>
