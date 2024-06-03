@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+</head>
+<body>
+<h1>Index Page</h1>
+<hr>
+<a href="/postData">Post 요청 연습 화면</a>   <a th:if="${session.mid == null}" href="registForm">회원가입</a> <a th:if="${session.mid == null}" href="loginForm">로그인</a><br>
+<a th:if="${session.mid != null}" href="myPage">마이페이지</a> <a th:if="${session.mid != null}" href="logout">로그아웃</a>
+<hr>
+<button id="get" onclick="getData()">Get 요청(파라미터 없음)</button>
+<div id="demo_get"></div>
+
+<button id="get2" onclick="getData2()">Get 요청 2(파라미터 있음[1개])</button>
+<div id="demo_get2"></div>
+
+<button id="get3" onclick="getData3()">Get 요청 3(파라미터 있음[3개])</button>
+<div id="demo_get3"></div>
+
+<button id="get4" onclick="getData4()">Get 요청 4</button>
+<div id="demo_get4"></div>
+
+<button id="get5" onclick="getData5()">Get 요청 5</button>
+<div id="demo_get5"></div>
+
+<button id="post" onclick="postData()">Post 요청(Form)</button>
+<div id="demo_post"></div>
+
+<button id="post2" onclick="postData2()">Post 요청2(JSON)</button>
+<div id="demo_post2"></div>
+
+<script>
+	function getData(){
+		const xhttp = new XMLHttpRequest();
+		xhttp.onload = function(){
+			document.getElementById("demo_get").innerHTML = this.responseText;
+		}
+		xhttp.open("GET", "/api/v1/get-api/hello");
+		xhttp.send();
+	}
+	
+	function getData2(){
+		const xhttp = new XMLHttpRequest();
+		xhttp.onload = function(){
+			document.getElementById("demo_get2").innerHTML = this.responseText;
+		}
+		xhttp.open("GET", "/api/v1/get-api/variable1/HongHaIn");
+		xhttp.send();
+	}
+	
+	function getData3(){
+		const xhttp = new XMLHttpRequest();
+		xhttp.onload = function(){
+			document.getElementById("demo_get3").innerHTML = this.responseText;
+		}
+		xhttp.open("GET", "/api/v1/get-api/request?name=HongHaIn&email=hain@gmail.com&addr=Seoul");
+		xhttp.send();
+	}
+	
+	function getData4(){
+		const xhttp = new XMLHttpRequest();
+		xhttp.onload = function(){
+			document.getElementById("demo_get4").innerHTML = this.responseText;
+		}
+		xhttp.open("GET", "/api/v1/get-api/request2?name=HongHaIn&email=hain@gmail.com&addr=Seoul");
+		xhttp.send();
+	}
+	
+	function getData5(){
+		const xhttp = new XMLHttpRequest();
+		xhttp.onload = function(){
+			document.getElementById("demo_get5").innerHTML = this.responseText;
+		}
+		xhttp.open("GET", "/api/v1/get-api/request3?name=James&email=James@green.com&addr=Seoul");
+		xhttp.send();
+	}
+	
+	function postData(){
+		const xhttp = new XMLHttpRequest();
+		xhttp.onload = function(){
+			document.getElementById("demo_post").innerHTML = this.responseText;
+		}
+		xhttp.open("POST", "/api/v1/post-api/member0"); // url 주소창에 실어 보내는 용도 (GET 방식)
+		xhttp.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+		xhttp.send("name=홍길동&email=hgd@green.com&addr=부산 진구"); // body 에 실어 보내는 용도 send
+	}
+	
+	function postData2(){
+		const xhttp = new XMLHttpRequest();
+		xhttp.onload = function(){
+			document.getElementById("demo_post2").innerHTML = this.responseText;
+		}
+		xhttp.open("POST", "/api/v1/post-api/member2"); // url 주소창에 실어 보내는 용도 (GET 방식)
+		xhttp.setRequestHeader("Content-Type", "application/json");
+		xhttp.send('{"name" : "Hong Ha In", "emial" : "hain@green.com", "addr" : "Seoul"}'); // body 에 실어 보내는 용도 send
+	}
+</script>
+</body>
+</html>

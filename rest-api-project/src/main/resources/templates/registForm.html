@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+</head>
+<body>
+<h1>회원가입 페이지</h1>
+<hr>
+<form action="/regist" method="post">
+	<input type="text" name="mid" id="mid" placeholder="아이디">
+	<input type="password" name="mpw" id="mpw" placeholder="비밀번호">
+	<input type="text" name="name" id="name" placeholder="이름">
+	<input type="text" name="email" id="email" placeholder="이메일">
+	<input type="text" name="addr" id="addr" placeholder="주소">
+	<input type="button" value="가입" onclick="regist()">
+</form>
+<div id="demo_regist"></div>
+<script>
+	function regist(){
+		const xhttp = new XMLHttpRequest();
+		xhttp.onload = function(){
+			document.getElementById("demo_regist").innerHTML = this.responseText
+		}
+		xhttp.open("POST", "/api/v1/post-api/regist")
+		xhttp.setRequestHeader("content-Type", "application/json")
+		const data = JSON.stringify({
+			mid : document.querySelector("#mid").value,
+			mpw : document.querySelector("#mpw").value,
+			name : document.querySelector("#name").value,
+			email : document.querySelector("#email").value,
+			addr : document.querySelector("#addr").value
+		})
+		xhttp.send(data)
+		//xhttp.send('{"mid" : mid, "mpw" : mpw, "name" : name, "email" : email, "addr" : addr}')
+	}
+</script>
+</body>
+</html>

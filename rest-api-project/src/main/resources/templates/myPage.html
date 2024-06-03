@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+</head>
+<body>
+<h1>마이페이지</h1>
+<hr>
+<h2>내 정보 조회하기</h2>
+<input type="button" value="불러오기" onclick="sel()"><br>
+<div id="mid"></div>
+<div id="mpw"></div>
+<div id="name"></div>
+<div id="email"></div>
+<div id="addr"></div>
+<div id="demo"></div>
+<div><input type="button" value="수정을 위해 불러오기" ></div>
+<div id="container">
+	<thead>
+		<tr>
+			<th>아이디</th><th>비밀번호</th><th>이름</th><th>이메일</th><th>주소</th>
+		</tr>
+	</thead>
+	
+</div>
+
+<script>
+	function sel(){
+		const xhttp = new XMLHttpRequest();
+		xhttp.onload = function(){
+			document.getElementById("demo").innerHTML = this.responseText;
+			const obj = JSON.parse(this.responseText)
+			document.getElementById("mid").innerHTML = "mid : " + obj.mid;
+			document.getElementById("mpw").innerHTML = "mpw : " + obj.mpw;
+			document.getElementById("name").innerHTML = "name : " + obj.name;
+			document.getElementById("email").innerHTML = "email : " + obj.email;
+			document.getElementById("addr").innerHTML = "addr : " + obj.addr;
+		}
+		xhttp.open("GET", "/api/v1/get-api/myInfo")
+		xhttp.send();
+	}
+	
+	function InfomationLoader(){
+		let container = document.getElementById("container");
+		let newRow = document.createElement("tr");
+		let td = document.createElement("td");
+		// 입력 인풋 박스 생성
+		let midInput = createInputCell("mid");
+		let mpwInput = createInputCell("mpw");
+		let nameInput = createInputCell("name");
+		let emailInput = createInputCell("email");
+		let addrInput = createInputCell("addr");
+		// 저장 취소 버튼
+		let saveBtn = createElement("button");
+		let cancerBtn = createElement("button");
+		saveBtn.type = "button";
+		saveBtn.innerText = "수정";
+		saveBtn.onclick = function(){
+			save();
+		}
+		
+	}
+	
+	function createInputCell(name){
+		let cell = document.createElement("td");
+		let input = document.createElement("input");
+		input.type = "text";
+		input.name = name;
+		cell.appendChild(input);
+		return cell;
+	}
+	
+	function save(){
+		location.href = "/regist";
+	}
+	
+</script>
+<!-- <input type="text" name="mid" id="mid"><br>
+	<input type="text" name="mpw" id="mpw"><br>
+	<input type="text" name="name" id="name"><br>
+	<input type="text" name="email" id="email"><br>
+	<input type="text" name="addr" id="addr"><br>
+ -->
+</body>
+</html>
