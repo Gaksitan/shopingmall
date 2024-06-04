@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+<script src="https://code.jquery.com/jquery-3.7.1.js" integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4=" crossorigin="anonymous"></script>
+</head>
+<body>
+<h1>Admin Page (Dash)</h1>
+<hr>
+<div id="div1">c1 : 0</div>
+<div id="div2">c2 : 0</div>
+<div id="div3"></div>
+<button id="btn">데이터 받아오기</button>
+<script>
+	$(document).ready(function(){
+		$("#btn").click(function(){
+			const div1 = $("#div1");
+			const div2 = $("#div2");
+			const div3 = document.querySelector("#div3");
+			const Data = {
+					username : div1.value,
+					password : div2.value
+			}
+			$.ajax({
+				url : "/api/adminCheck",
+				type : "GET",
+				//data : JSON.stringify(Data),
+				//contentType : "application/json",
+				success : function(response){
+					console.log(response);
+					div3.innerText = "c1 : " + response.c1 + ", c2 : " + response.c2;
+					div1.text("c1 : " + response.c1);
+					div2.text("c2 : " + response.c2);
+				},
+				error : function(){
+					console.log("횟수 받아오기 실패");
+					div3.text("횟수 받아오기 실패");
+				}
+			})
+		})
+	})
+</script>
+</body>
+</html>

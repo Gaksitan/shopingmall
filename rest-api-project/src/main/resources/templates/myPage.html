@@ -59,6 +59,12 @@
 		saveBtn.onclick = function(){
 			save();
 		}
+		cancerBtn.type = createElement("button");
+		cancerBtn.innerText = "취소";
+		cancerBtn.onclick = function(){
+			cancer();
+		}
+		newRow.appendChild(td);
 		
 	}
 	
@@ -75,6 +81,9 @@
 		location.href = "/regist";
 	}
 	
+	function cancer(){
+		
+	}
 </script>
 <!-- <input type="text" name="mid" id="mid"><br>
 	<input type="text" name="mpw" id="mpw"><br>

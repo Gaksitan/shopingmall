@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+</head>
+<body>
+<h1>회원가입 페이지</h1>
+<hr>
+<table>
+	<tr>
+		<th>아이디</th>
+		<td><input type="text" name="username"></td>
+		<td><button type="button" onclick="idCheck()">아이디 중복 체크</button></td>
+	</tr>
+	<tr>
+		<td></td>
+		<td><div id="div1"></div></td>
+		<td></td>
+	</tr>
+	<tr>
+		<th>비밀번호</th>
+		<td><input type="password" name="password"></td>
+	</tr>
+	<tr>
+		<th>비밀번호 확인</th>
+		<td><input type="password" name="confirmPassword"></td>
+	</tr>
+	<tr>
+		<th>이름</th>
+		<td><input type="text" name="name"></td>
+	</tr>
+	<tr>
+		<th>이메일</th>
+		<td><input type="text" name="email"></td>
+	</tr>
+	<tr>
+		<th>전화번호</th>
+		<td><input type="text" name="tel"></td>
+	</tr>
+	<tr>
+		<th></th>
+		<td><input type="text" name="username"></td>
+	</tr>
+</table>
+<script>
+	function idCheck(){
+		const username_ = document.querySelector("input[name='username']");
+		
+		const data = {
+				username : username_.value
+		}
+		const jsonData = JSON.stringify(data);
+		const xhttp = new XMLHttpRequest();
+		xhttp.onload = function(){
+			document.getElementById("div1").innerHTML = this.responseText;
+		}
+		xhttp.open("POST", "/api/idCheck");
+		xhttp.setRequestHeader("Content-type", "application/json");
+		xhttp.send(jsonData);
+	}
+</script>
+</body>
+</html>
