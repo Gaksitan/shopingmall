@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+</head>
+<body>
+<h1>기사 상세보기 페이지</h1>
+<hr>
+<h2 th:text="${news.title}"><span><a href="/journal/updateNews">기사수정</a></span></h2>
+<hr>
+<input type="hidden" th:value="${news.nno}" id="nno">
+<p><span th:text="${news.nno}"></span>   <span th:text="${news.username.username}"></span>   <span th:text="${news.regDate}"></span></p>
+<p th:text="${news.content}"></p>
+<div th:if="${session.username != null}">
+<p th:if="${session.role == 'ROLE_ADMIN'}">
+<input type="button" value="승인" onclick="approval()"> <input type="button" value="비승인" onclick="disapproval()">
+</p>
+</div>
+<a href="/newsListAll">기사목록으로 돌아가기</a>
+<script>
+	function approval(){
+		const nno_ = document.querySelector("#nno");
+		console.log(nno_.value);
+		const xhttp = new XMLHttpRequest();
+		const data = {
+				nno : nno_.value,
+				approval : true
+		}
+		const sendData = JSON.stringify(data);
+		
+		xhttp.onload = function(){
+			alert(this.responseText);
+		}
+		xhttp.open("POST", "/ajax/approval");
+		xhttp.setRequestHeader("Content-type", "application/json");
+		xhttp.send(sendData);
+	}
+	
+	function disapproval(){
+		const nno_ = document.querySelector("#nno");
+		const xhttp = new XMLHttpRequest();
+		const data = {
+				nno : nno_.value,
+				approval : false
+		}
+		const sendData = JSON.stringify(data);
+		
+		xhttp.onload = function(){
+			alert(this.responseText);
+		}
+		xhttp.open("POST", "/ajax/approval");
+		xhttp.setRequestHeader("Content-type", "application/json");
+		xhttp.send(sendData);
+	}
+	
+</script>
+</body>
+</html>

@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+</head>
+<body>
+<h1>그린포커스 일보</h1>
+<hr>
+<h3 th:if="${session.username != null}">[[${session.username}]]([[${session.name}]])님 환영합니다. [[${session.username}]]님의 등급은 [[${session.member.role}]]입니다.</h3>
+
+<nav id="nav1">
+	<a th:if="${session.username != null}" href="/member/myPage">마이페이지</a> 
+	<a th:if="${session.username != null}" href="/logout">로그아웃</a> 
+	<a th:if="${session.username == null}" href="/loginForm">로그인</a> 
+	<a th:if="${session.username == null}" href="/registForm">회원가입</a>
+</nav>
+<nav id="nav2" th:if="${session.username != null}">
+	<a th:if="${session.role == 'ROLE_JOURNALIST' || session.role == 'ROLE_ADMIN'}" href="/journal/writeForm">기사작성</a> 
+	<a th:if="${session.role == 'ROLE_JOURNALIST' || session.role == 'ROLE_ADMIN'}" href="/journal/myNews">내가 쓴 기사 목록</a>
+	<a th:if="${session.role == 'ROLE_ADMIN'}" href="/admin/adminMain">편집장(관리자) 페이지</a> 
+</nav>
+</body>
+</html>

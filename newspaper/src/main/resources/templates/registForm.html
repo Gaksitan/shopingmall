@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+</head>
+<style>
+	#idCheckResultSuccess{
+		color: green;
+	}
+	
+	#idCheckResultFail{
+		color: red;
+	}
+</style>
+<body>
+<h1>회원가입 페이지</h1>
+<hr>
+<form action="/regist" method="post">
+	<table>
+		<tr>
+			<th>아이디</th>
+			<td><input type="text" id="username" name="username" placeholder="아이디를 입력하세요."></td>
+			<td><button type="button" id="idCheckBtn" onclick="Check()">아이디 중복체크</button></td>
+		</tr>
+		<tr>
+			<th></th>
+			<td><span id="idCheckResultFail"></span><span id="idCheckResultSuccess"></span></td>
+		</tr>
+		<tr>
+			<th>비밀번호</th>
+			<td><input type="password" name="password" placeholder="비밀번호를 입력하세요." ></td>
+		</tr>
+		<tr>
+			<th>비밀번호 확인</th>
+			<td><input type="password" name="confirmPassword" placeholder="비밀번호를 한번 더 입력하세요." ></td>
+		</tr>
+		<tr>
+			<td></td>
+			<td id="confirmPw"></td>
+		</tr>
+		<tr>
+			<th>이름</th>
+			<td><input type="text" name="name" placeholder="이름을 입력하세요."></td>
+		</tr>
+		<tr>
+			<th>전화번호</th>
+			<td><input type="tel" name="tel" placeholder="전화번호를 입력하세요."></td>
+		</tr>
+		<tr>
+			<th>이메일</th>
+			<td><input type="text" name="email" placeholder="이메일을 입력하세요."></td>
+		</tr>
+		<tr>
+			<td colspan="2"><input type="submit" value="가입"></td>
+		</tr>
+	</table>
+</form>
+<script>
+	function Check(){
+		const username_ = document.querySelector("input[name='username']");
+		
+		const data = {
+				username : username_.value
+		}
+		const sendData = JSON.stringify(data);
+		const xhttp = new XMLHttpRequest();
+		xhttp.onload = function(){
+			let msg = this.responseText;
+			if(msg === "사용가능한 아이디입니다."){
+				document.querySelector("#idCheckResultFail").innerHTML = "";
+				document.querySelector("#idCheckResultSuccess").innerHTML = this.responseText
+			}else{
+				document.querySelector("#idCheckResultSuccess").innerHTML = "";
+				document.querySelector("#idCheckResultFail").innerHTML = this.responseText				
+			}
+		}
+		xhttp.open("POST", "/ajax/idCheck");
+		xhttp.setRequestHeader("Content-type", "application/json");
+		xhttp.send(sendData);
+	}/*
+	$(document).ready(function(){
+		$('#idCheckBtn').on('click', function(e){
+			const username_ = document.querySelector("input[name='username']");
+			const data_ = {
+					username : username_.value
+			}
+			
+			$.ajax({
+				url : "/ajax/idCheck",
+				type : "POST",
+				ContentType : "application/json",
+				data : JSON.stringify(data_),
+				//dataType : "text",
+				success : function(response){
+					console.log(response);
+					$('#idCheckResult').text(response);
+				},
+				error : function(){
+					console.log("에러 발생");
+				}
+			})
+		})
+		
+		
+	})
+	*/
+	
+	
+	
+	
+	const password = document.querySelector("input[name='password']");
+	const confirmPassword = document.querySelector("input[name='confirmPassword']");
+	
+	password.addEventListener("input", confirm);
+	confirmPassword.addEventListener("input", confirm);
+	
+	function confirm(){
+		let msg = "";
+		const pwResult = document.querySelector("#confirmPw");
+		if(password.value.trim() == confirmPassword.value.trim()){
+			msg = "비밀번호가 일치합니다.";
+		}else{
+			msg = "비밀번호가 일치하지않습니다.";
+		}
+		pwResult.innerHTML = msg;
+	}
+	
+	
+</script>
+</body>
+</html>

@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+</head>
+<body>
+<h1>편집장(관리자) 페이지</h1>
+<hr>
+<table>
+	<tr>
+		<th>기사번호</th><th>기사 제목</th><th>기사 내용</th><th>작성자</th><th>작성날짜</th><th>승인여부</th>
+	</tr>
+	<tr th:each="news : ${newsList}">
+		<td th:text="${news.nno}"></td>
+		<td><a th:href="@{/newsDetail(nno=${news.nno})}" th:text="${news.title}"></a></td>
+		<td th:text="${news.content}"></td>
+		<td th:text="${news.username.username}"></td>
+		<td th:text="${news.regDate}"></td>
+		<td th:if="${news.approval == true}">승인완료</td>
+		<td th:if="${news.approval == false}">비승인</td>
+	</tr>
+</table>
+</body>
+</html>
