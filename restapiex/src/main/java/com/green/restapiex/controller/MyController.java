@@ -44,7 +44,10 @@ public class MyController {
 		return "/admin";
 	}
 	
-	
+	@RequestMapping("/index3")
+	public String index3() {
+		return "/index3";
+	}
 	
 	
 }

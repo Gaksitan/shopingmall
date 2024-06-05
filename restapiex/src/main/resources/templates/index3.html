@@ -41,14 +41,14 @@
 <input type="text" name="title" placeholder="Input title......"><br>
 <input type="text" name="content" placeholder="Input content......"><br>
 <input type="text" name="writer" placeholder="Input writer......"><br>
-<button id="postMemo">Memo 저장하기</button>
+<button onclick="postMemo()">Memo 저장하기</button>
 <div id="demo_post"></div>
 <div class="container"><button id="hide">hide</button><button id="show" >show</button></div>
 
 <hr>
 <h2>메모 조회하기</h2>
 <input type="text" name="mno" placeholder="Input mno......">
-<button id="getMemo">Memo 조회하기</button>
+<button onclick="getMemo()">Memo 조회하기</button>
 <div id="demo_get"></div>
 <div class="container"><button id="hide2">hide</button><button id="show2" >show</button></div>
 
@@ -58,131 +58,27 @@
 <input type="text" name="title2" placeholder="Input title......"><br>
 <input type="text" name="content2" placeholder="Input content......"><br>
 <input type="text" name="writer2" placeholder="Input writer......"><br>
-<button id="putMemo" type="button">Memo 수정하기</button>
+<button onclick="putMemo()">Memo 수정하기</button>
 <div id="demo_put"></div>
 <div class="container"><button id="hide3">hide</button><button id="show3" >show</button></div>
 
 <hr>
 <h2>메모 삭제하기</h2>
 <input type="text" name="mno3" placeholder="Input mno......">
-<button id="deleteMemo">Memo 삭제하기</button>
+<button onclick="deleteMemo()">Memo 삭제하기</button>
 <div id="demo_delete"></div>
 <div class="container"><button id="hide4">hide</button><button id="show4" >show</button></div>
 
 <script>
-	$(document).ready(function(){
-		// POST 방식 Ajax (데이터 등록(저장))
-		$("#postMemo").click(function(){
-			const title_ = document.querySelector("input[name='title']");
-			const content_ = document.querySelector("input[name='content']");
-			const writer_ = document.querySelector("input[name='writer']");
-			const Data = {
-					title : title_.value,
-					content : content_.value,
-					writer : writer_.value
-			}
-			$.ajax({
-				url : "memoapp/memo",
-				type : "POST",
-				contentType : "application/json",
-				data : JSON.stringify(Data),
-				dataType : "text",
-				success : function(response){
-					console.log(response);
-					$("#demo_post").text(response);
-				},
-				error : function(){
-					console.log("등록에 실패했습니다.");
-				}
-			})
-		});
-		// GET 방식 Ajax (데이터 조회)
-		$("#getMemo").click(function(){
-			const mno_ = document.querySelector("input[name='mno']");
-			const mno2_ = document.querySelector("input[name='mno2']");
-			const title2_ = document.querySelector("input[name='title2']");
-			const content2_ = document.querySelector("input[name='content2']");
-			const writer2_ = document.querySelector("input[name='writer2']");
-			$.ajax({
-				url : "/memoapp/memo?mno=" + mno_.value,
-				type : "GET",
-				//dataType : "text",
-				success : function(response){
-					console.log(response);
-					$("#demo_get").text(response);
-					mno2_.value = response.mno;
-					title2_.value= response.title;
-					content2_.value = (response.content);
-					writer2_.value= (response.writer);
-				},
-				error : function(){
-					console.log("데이터 조회에 실패했습니다.");
-					$("#demo_get").text("데이터 조회에 실패했습니다.");
-				}
-			})
-		})
 		
-		// PUT 방식 Ajax (데이터 수정 or 등록)
-		$("#putMemo").click(function(){ // 대상을 바꿔야함 submit이라 폼을 기준으로 잡아야함
-			const mno_ = document.querySelector("input[name='mno2']");
-			const title_ = document.querySelector("input[name='title2']");
-			const content_ = document.querySelector("input[name='content2']");
-			const writer_ = document.querySelector("input[name='writer2']");
-			
-			const Data = {
-					mno : mno_.value,
-					title : title_.value,
-					content : content_.value,
-					writer : writer_.value
-			};
-			
-			$.ajax({
-				url : "/memoapp/memo",
-				type : "POST",
-				data : JSON.stringify(Data),
-				contentType : "application/json",
-				dataType : "text",
-				success : function(response){
-					console.log(response);
-					$("#demo_put").text(response);
-				},
-				error : function(){
-					console.log("수정에 실패했습니다.");
-					$("#demo_put").text("수정에 실패했습니다.");
-				}
-			})
-		})
-		
-		// DELETE 방식 Ajax (데이터 삭제)
-		$("#deleteMemo").click(function(){
-			const mno_ = document.querySelector("input[name='mno3']");
-			
-			$.ajax({
-				url : "/memoapp/memo/" + mno_.value,
-				type : "DELETE",
-				dataType : "text",
-				success : function(response){
-					console.log(response);
-					$("#demo_delete").text(response);
-				},
-				error : function(){
-					console.log("데이터 삭제에 실패 했습니다.");
-					$("#demo_delete").text("데이터 삭제에 실패 했습니다.");
-				}
-				
-			})
-		})
-	})
 	
-	
-	
-<!--
 	function postMemo(){
+		
 		// 입력 양식에 적힌 데이터 가져오기
 		const title_ = document.querySelector("input[name='title']");
 		const content_ = document.querySelector("input[name='content']");
 		const writer_ = document.querySelector("input[name='writer']");
-		// 가져온 입력데이터를 객체로 만들기 -> JSON으로 변경하여 서버에 전송하기 위해서.
+		// 가져온 입력데이터를 객체로 만들기 --> JSON으로 변경하여 서버에 전송하기 위해서.
 		const memo = {
 				title : title_.value,
 				content : content_.value,
@@ -190,7 +86,19 @@
 		}
 		// 객체를 JSON으로 변경하기
 		const sendData = JSON.stringify(memo);
+			
+		fetch("/memoapp/memo", {
+			method: "POST",
+			headers: {
+				"Content-Type" : "application/json"
+			},
+			body: sendData
+		})
+		.then(response => response.text())
+		.then(data => document.getElementById("demo_post").innerHTML = data)
+		.catch(error => document.getElementById("demo_post").innerHTML = error);
 		
+/*
 		const xhttp = new XMLHttpRequest();
 		xhttp.onload = function(){ // 서버가 등록처리 후 결과 데이터를 보내주면 responseText로 받는다.
 			document.getElementById("demo_post").innerHTML = this.responseText;
@@ -198,8 +106,8 @@
 		xhttp.open("POST", "/memoapp/memo");
 		xhttp.setRequestHeader("Content-type", "application/json");
 		xhttp.send(sendData);
+*/	
 	}
-	
 	function getMemo(){
 		// DB에 검색할 때 사용할 텍스트 박스
 		const mno_ = document.querySelector("input[name='mno']");
@@ -210,6 +118,21 @@
 		const content_ = document.querySelector("input[name='content2']");
 		const writer_ = document.querySelector("input[name='writer2']");
 		
+		fetch("/memoapp/memo?mno=" + mno_.value, {
+			method: "GET",
+		})
+		.then(response => response.text())
+		.then(data => {
+			const obj = JSON.parse(data);
+			document.getElementById("demo_get").innerHTML = "mno : " + obj.mno + ", title : " + obj.title + ", content : " + obj.content + ", writer : " + obj.writer;
+			mno2_.value = obj.mno;
+			title_.value = obj.title;
+			content_.value = obj.content;
+			writer_.value = obj.writer;
+		})
+		.catch(error => document.getElementById("demo_get").innerHTML = error);
+		
+	/*	
 		const xhttp = new XMLHttpRequest();
 		xhttp.onload = function(){ // 서버가 등록처리 후 결과 데이터를 보내주면 responseText로 받는다.
 			const obj = JSON.parse(this.responseText);
@@ -222,6 +145,7 @@
 		xhttp.open("GET", "/memoapp/memo?mno=" + mno_.value);
 		// xhttp.setRequestHeader("Content-Type", "application/json");
 		xhttp.send();
+	*/
 	}
 	
 	function putMemo(){
@@ -239,6 +163,17 @@
 		
 		const memo = JSON.stringify(memoDto);
 		
+		fetch("memoapp/memo", {
+			method: "PUT",
+			headers: {
+				"Content-Type" : "application/json"
+			},
+			body: memo
+		})
+		.then(response => response.text())
+		.then(data => document.querySelector("#demo_put").innerHTML = data)
+		.catch(erroe => document.querySelector("#demo_put").innerHTML = error)
+	/*	
 		const xhttp = new XMLHttpRequest();
 		xhttp.onload = function(){ // 서버가 등록처리 후 결과 데이터를 보내주면 responseText로 받는다.
 			document.getElementById("demo_put").innerHTML = this.responseText;
@@ -246,19 +181,27 @@
 		xhttp.open("PUT", "/memoapp/memo");
 		xhttp.setRequestHeader("Content-type", "application/json");
 		xhttp.send(memo);
+	*/	
 	}
 	
 	function deleteMemo(){
 		const mno = document.querySelector("input[name='mno3']");
 		
+		fetch("memoapp/memo/" + mno.value, {
+			method: "DELETE"
+		})
+		.then(response => response.text())
+		.then(data => document.querySelector("#demo_delete").innerHTML = data)
+		.catch(error => document.querySelector("#demo_delete").innerHTML = error)
+		/*
 		const xhttp = new XMLHttpRequest();
 		xhttp.onload = function(){
 			document.getElementById("demo_delete").innerHTML = this.responseText;
 		}
 		xhttp.open("DELETE", "/memoapp/memo/" + mno.value);
 		xhttp.send();
+		*/
 	}
-	-->
 </script>
 </body>
 </html>

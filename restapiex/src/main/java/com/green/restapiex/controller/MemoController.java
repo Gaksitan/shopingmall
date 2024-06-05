@@ -63,7 +63,7 @@ public class MemoController {
 	
 	// PUT 메소드 (서버에 자료 재 등록할 때)
 	@PutMapping("/memo")
-	public String putMemo( MemoDto memoDto) {
+	public String putMemo(@RequestBody MemoDto memoDto) {
 		System.out.println("postMemo ..... memoDto : " + memoDto);
 		
 		Memo memo = new Memo();
