@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+</head>
+<body>
+<h1>Board List Page</h1>
+<hr>
+<div>
+	<table>
+		<thead>
+			<tr>
+				<th>bno</th><th>title</th><th>writer</th><th>originName</th><th>image</th>
+			</tr>
+		</thead>
+		<tbody th:each="board : ${boardList}">
+			<tr>
+				<td>[[${board.bno}]]</td>
+				<td><a th:href="@{|/member/detail?bno=${board.bno}|}">[[${board.title}]]</a></td>
+				<td>[[${board.member.username}]]</td>
+				<td>[[${board.originName}]]</td>
+				<td><img th:src="@{/images/{thumbnail}(thumbnail=${board.thumbnailName})}"></td>
+			</tr>
+		</tbody>
+	</table>
+</div>
+<div id="demo"></div>
+<script>
+	
+</script>
+</body>
+</html>

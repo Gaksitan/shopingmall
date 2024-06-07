@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<script src="https://code.jquery.com/jquery-3.7.1.js" integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4=" crossorigin="anonymous"></script>
+<title>로그인 화면</title>
+</head>
+<body>
+<h1>Login Form Page</h1>
+<hr>
+<div>
+	<form name="frm">
+		<input type="text" name="username" placeholder="Input username...."><br>
+		<input type="password" name="password" placeholder="Input password...."><br>
+		<input type="submit" value="로그인" onclick="loginForm(event)"><br>
+	</form>
+</div>
+<div id="demo"></div>
+<script>
+	function loginForm(event){
+		event.preventDefault();
+		alert("submit....");
+		
+		var form = document.forms['frm'];
+		var formData = $(form).serialize();
+		
+		$.ajax({
+			type: "POST",
+			url: "http://localhost:9001/loginProc",
+			contentType: "application/x-www-form-urlencoded",
+			data: formData,
+			dataType: "text", // 서버가 보내주는 데이터의 타입
+			success: function(data){
+				console.log(data);
+				$("#demo").html(data);
+			},
+			error: function(){
+				console.log("에러 발생.....");
+			}
+		})
+	}
+</script>
+</body>
+</html>
